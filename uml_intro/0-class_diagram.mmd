@@ -1,0 +1,36 @@
+---
+config:
+  layout: elk
+---
+classDiagram
+direction TB
+    class Library {
+	    +add_book()
+	    +register_user()
+	    +create_loan()
+    }
+
+    class Book {
+	    +str title
+	    +str author
+	    +bool available
+	    +mark_as_unavailable()
+	    +mark_as_available()
+    }
+
+    class User {
+	    +str name
+	    +str email
+    }
+
+    class Loan {
+	    +start_date
+	    +end_date
+	    +close_loan()
+    }
+
+    Library "1" *-- "*" Book
+    Library "1" *-- "*" User
+    Library "1" *-- "*" Loan
+    Loan "*" --> "1" Book
+    Loan "*" --> "1" User
