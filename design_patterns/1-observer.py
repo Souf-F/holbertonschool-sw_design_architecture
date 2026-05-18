@@ -54,19 +54,19 @@ class NewsSubject:
 class LogObserver:
     """Observer that logs events to console"""
     def update(self, topic: str, data: str) -> None:
-        print(f"log: {topic}={data}")
+        print(f"log:{topic}={data}")  # noqa: E231
 
 
 class EmailObserver:
     """Observer that sends email notifications"""
     def update(self, topic: str, data: str) -> None:
-        print(f"email: {topic}={data}")
+        print(f"email:{topic}={data}")  # noqa: E231
 
 
 class SmsObserver:
     """Observer that sends SMS notifications"""
     def update(self, topic: str, data: str) -> None:
-        print(f"sms: {topic}={data}")
+        print(f"sms:{topic}={data}")  # noqa: E231
 
 
 def main() -> None:
