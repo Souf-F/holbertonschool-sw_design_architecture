@@ -1,92 +1,54 @@
 #!/usr/bin/env python3
-"""
-Factory Pattern - Vehicle Factory with Registry
-Demonstrates the Open/Closed Principle through dynamic registration
-"""
+from __future__ import annotations
 
 
 class Bus:
-    """Bus vehicle"""
-    def mode(self):
+    def mode(self) -> str:
         return "road"
 
 
 class Train:
-    """Train vehicle"""
-    def mode(self):
+    def mode(self) -> str:
         return "rails"
 
 
 class Bike:
-    """Bike vehicle"""
-    def mode(self):
+    def mode(self) -> str:
         return "lane"
 
 
 class Scooter:
-    """Scooter vehicle - not yet registered"""
-    def mode(self):
+    def mode(self) -> str:
         return "scooter_lane"
 
 
 class VehicleFactory:
-    """
-    Factory for creating vehicles using a registry pattern.
+    def __init__(self) -> None:
+        self._registry: dict[str, type] = {
+            "bus": Bus,
+            "train": Train,
+            "bike": Bike,
+        }
 
-    The registry maps string names to vehicle classes.
-    New vehicle types can be added without modifying the create() method.
-    """
-
-    def __init__(self):
-        """Initialize factory with empty registry and register initial types"""
-        self._registry = {}
-        # Pre-register existing vehicle types
-        self.register_kind("bus", Bus)
-        self.register_kind("train", Train)
-        self.register_kind("bike", Bike)
-
-    def register_kind(self, name: str, cls):
-        """
-        Register a new vehicle type in the factory.
-
-        Args:
-            name: String identifier for the vehicle type
-            cls: The class to instantiate for this vehicle type
-        """
+    def register_kind(self, name: str, cls: type) -> None:
         self._registry[name] = cls
 
-    def create(self, kind: str):
-        """
-        Create a vehicle instance by name.
-
-        Args:
-            kind: The registered name of the vehicle type
-
-        Returns:
-            An instance of the requested vehicle type
-
-        Raises:
-            ValueError: If the vehicle type is not registered
-        """
-        cls = self._registry.get(kind)
-        if cls is None:
-            raise ValueError(f"Unknown vehicle kind: {kind}")
-        return cls()
+    def create(self, kind: str) -> object:
+        if kind not in self._registry:
+            raise ValueError(f"Unknown vehicle kind: {kind!r}")
+        return self._registry[kind]()
 
 
-def main():
-    """Demonstrate the factory pattern with vehicle creation"""
+def main() -> None:
     factory = VehicleFactory()
-
-    # Create and use pre-registered vehicles
     print(factory.create("bus").mode())
     print(factory.create("train").mode())
     print(factory.create("bike").mode())
 
-    # Register the new Scooter type
+    # Register Scooter
     factory.register_kind("scooter", Scooter)
 
-    # Create and use the newly registered vehicle
+    # Create and print scooter mode
     print(factory.create("scooter").mode())
 
 
